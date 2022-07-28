@@ -76,3 +76,8 @@ def test_get_cocktails_that_have_given_ingredients(
 ):
     ingredients = ["Blackberry brandy", "Anis"]
     cocktails = get_cocktails_that_have_given_ingredients(ingredients)
+    assert len(cocktails) == 4
+    assert cocktails[0] == "11021"
+    assert cocktails[1] == "12418"
+    assert cocktails[2] == "13775"
+    assert cocktails[3] == "16250"
