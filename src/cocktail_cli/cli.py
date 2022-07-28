@@ -12,7 +12,7 @@ from cocktail_cli.api import (
 
 
 @click.command()
-@click.argument("components_path", help="path to comma-se")
+@click.argument("components_path", help="path to comma-separated ")
 def cli(components_path: str):
     if not os.path.isfile(components_path):
         raise FileNotFoundError(
