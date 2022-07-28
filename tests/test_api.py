@@ -9,6 +9,7 @@ from src.cocktail_cli.api import (
     get_cocktails_that_have_given_ingredients,
     get_cocktail2ingredients,
     what_cocktail_can_i_make,
+    get_cocktails,
 )
 
 cocktail_url = "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=11007"
@@ -215,3 +216,11 @@ def test_what_cocktail_can_i_make():
     ingredients = ["Anis", "Blackberry brandy"]
 
     cocktails = what_cocktail_can_i_make(cocktail2ingredients, ingredients)
+
+
+def test_get_cocktails():
+    ingredients = ["Anis", "Blackberry brandy"]
+    cocktails = get_cocktails(ingredients)
+    assert len(cocktails) == 1
+    assert cocktails[0]["name"] == "Jelly Bean"
+    assert cocktails[0]["id"] == "13775"
