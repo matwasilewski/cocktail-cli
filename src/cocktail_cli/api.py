@@ -7,10 +7,9 @@ cocktail_url = "https://www.thecocktaildb.com/api/json/v1/1/filter.php"
 
 
 def cocktails_with_ingredients(ingredients: List[str]):
-    headers = {'Accept': 'application/json'}
+    headers = {"Accept": "application/json"}
     payload = {"i": ingredients}
     resp = requests.get(cocktail_url, params=payload, headers=headers)
-
     try:
         cocktails = resp.json()["drinks"]
     except:
