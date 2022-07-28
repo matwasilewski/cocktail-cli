@@ -60,3 +60,11 @@ class NoPathsFoundException(Exception):
 
 class BadOperatorException(Exception):
     pass
+
+
+class CocktailAPIException(Exception):
+    pass
+
+
+class CocktailDetailsException(CocktailAPIException):
+    pass
