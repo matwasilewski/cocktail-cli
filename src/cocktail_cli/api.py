@@ -100,3 +100,20 @@ def get_cocktail2ingredients(
         )
 
     return cocktail2ingredients
+
+
+def what_cocktail_can_i_make(
+    cocktail2ingredients: Dict[str, List], ingredients: List
+):
+    can_make = []
+    ingredients = set([ing.lower() for ing in set(ingredients)])
+
+    for cocktail_id, cocktail_ingredients in cocktail2ingredients.items():
+        for ingredient in cocktail_ingredients:
+            this_cocktail_ingredients = {
+                ing.lower() for ing in cocktail_ingredients
+            }
+            if len(this_cocktail_ingredients.difference(ingredients)) == 0:
+                can_make.append(cocktail_id)
+
+    return can_make
