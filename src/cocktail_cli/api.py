@@ -49,7 +49,7 @@ def cocktails_with_ingredients(ingredients: List[str]):
     return cocktails
 
 
-def cocktail_details(cocktail_url):
+def cocktail_components(cocktail_url) -> List[str]:
     headers = {"Accept": "application/json"}
     ingredients = set()
 
@@ -57,14 +57,16 @@ def cocktail_details(cocktail_url):
         resp = session.get(cocktail_url, headers=headers)
         assert resp.status_code == 200
 
-        details = resp.json()[0]
+        details = resp.json()["drinks"][0]
 
         for i in range(1, 16):
-            for ingredient in details[f"strIngredient{i}"]:
-                ingredients.add(ingredient)
+            if details.get(f"strIngredient{i}", None):
+                ingredients.add(details.get(f"strIngredient{i}", None))
     except AssertionError:
         logging.error(f"Non-200 exception code: {resp.status_code}")
         raise CocktailAPIException("Non-200 exception in {resp}")
     except KeyError:
         logging.error(f"Unexpected response outcome!")
         raise CocktailDetailsException()
+
+    return sorted(list(ingredients))
