@@ -79,41 +79,45 @@ def cocktail_components(cocktail_url) -> List[str]:
 
 
 def get_cocktails_that_have_given_ingredients(components: List[str]):
-    cocktail_ids = set()
+    cocktail_ids = {}
 
     for component in components:
         cocktails_from_component = cocktails_with_ingredient(component)
         for cocktail in cocktails_from_component:
-            cocktail_ids.add(cocktail["idDrink"])
+            cocktail_ids[cocktail["idDrink"]] = cocktail["strDrink"]
 
-    return sorted(list(cocktail_ids))
+    return cocktail_ids
 
 
 def get_cocktail2ingredients(
-    cocktail_ids: List[str],
-) -> Dict[str, List[str]]:
+    cocktail_ids: Dict[str, str],
+) -> dict[str, dict[str, str | list[str]]]:
     cocktail2ingredients = {}
 
-    for cocktail_id in cocktail_ids:
-        cocktail2ingredients[cocktail_id] = cocktail_components_from_id(
-            cocktail_id
-        )
+    for cocktail_id, cocktail_name in cocktail_ids.items():
+        cocktail2ingredients[cocktail_id] = {
+            "name": cocktail_name,
+            "ingredients": cocktail_components_from_id(cocktail_id),
+        }
 
     return cocktail2ingredients
 
 
-def what_cocktail_can_i_make(
-    cocktail2ingredients: Dict[str, List], ingredients: List
-):
+def what_cocktail_can_i_make(cocktail2ingredients: Dict, ingredients: List):
+
     can_make = []
     ingredients = set([ing.lower() for ing in set(ingredients)])
 
     for cocktail_id, cocktail_ingredients in cocktail2ingredients.items():
-        for ingredient in cocktail_ingredients:
-            this_cocktail_ingredients = {
-                ing.lower() for ing in cocktail_ingredients
-            }
-            if len(this_cocktail_ingredients.difference(ingredients)) == 0:
-                can_make.append(cocktail_id)
+        this_cocktail_ingredients = {
+            ing.lower() for ing in cocktail_ingredients["ingredients"]
+        }
+        if len(this_cocktail_ingredients.difference(ingredients)) == 0:
+            can_make.append(
+                {
+                    "name": cocktail_ingredients["name"],
+                    "id": cocktail_id,
+                }
+            )
 
     return can_make
