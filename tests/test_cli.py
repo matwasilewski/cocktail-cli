@@ -11,7 +11,7 @@ def cli_runner():
 
 def test_cli(cli_runner):
     result = cli_runner.invoke(cli, ["whiskey"])
-    assert result.exit_code == 0
+    assert result.exit_code == 1
 
 
 def test_with_pantry(cli_runner):
