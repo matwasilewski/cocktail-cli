@@ -11,24 +11,23 @@ from src.cocktail_cli.exceptions import (
     CocktailAPIException,
 )
 
-session = requests.Session()
-# session = CachedSession(
-#     "cocktails_cache",
-#     use_cache_dir=True,
-#     cache_control=True,
-#     expire_after=timedelta(days=1),
-#     allowable_methods=[
-#         "GET",
-#         "POST",
-#     ],
-#     allowable_codes=[
-#         200,
-#         400,
-#     ],
-#     ignored_parameters=["api_key"],
-#     match_headers=True,
-#     stale_if_error=True,
-# )
+session = CachedSession(
+    "mycache",
+    use_cache_dir=True,
+    cache_control=True,
+    expire_after=timedelta(days=1),
+    allowable_methods=[
+        "GET",
+        "POST",
+    ],
+    allowable_codes=[
+        200,
+        400,
+    ],
+    ignored_parameters=["api_key"],
+    match_headers=True,
+    stale_if_error=True,
+)
 
 filter_url = "https://www.thecocktaildb.com/api/json/v1/1/filter.php"
 
@@ -60,7 +59,10 @@ def cocktail_components(cocktail_url) -> List[str]:
     ingredients = set()
 
     try:
-        resp = session.get(cocktail_url, headers=headers)
+        resp = session.get(
+            cocktail_url,
+            headers=headers,
+        )
         assert resp.status_code == 200
 
         details = resp.json()["drinks"][0]
@@ -121,3 +123,16 @@ def what_cocktail_can_i_make(cocktail2ingredients: Dict, ingredients: List):
             )
 
     return can_make
+
+
+def get_cocktails(ingredients):
+    cocktails_that_contain_some_ingredients = (
+        get_cocktails_that_have_given_ingredients(ingredients)
+    )
+
+    concktail2ingredient = get_cocktail2ingredients(
+        cocktails_that_contain_some_ingredients
+    )
+
+    cocktails = what_cocktail_can_i_make(concktail2ingredient, ingredients)
+    return cocktails
