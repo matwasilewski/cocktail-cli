@@ -4,5 +4,6 @@ import click
 
 
 @click.command()
+@click.argument('components')
 def cli(components: List[str]):
-    return f"Components are: {components}"
+    click.echo(f'Components are: {components}!')
