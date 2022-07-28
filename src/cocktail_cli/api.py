@@ -1,7 +1,7 @@
 import logging
 from datetime import timedelta
 from json import JSONDecodeError
-from typing import List
+from typing import List, Dict
 
 import requests
 from requests_cache import CachedSession
@@ -87,3 +87,16 @@ def get_cocktails_that_have_given_ingredients(components: List[str]):
             cocktail_ids.add(cocktail["idDrink"])
 
     return sorted(list(cocktail_ids))
+
+
+def get_cocktail2ingredients(
+    cocktail_ids: List[str],
+) -> Dict[str, List[str]]:
+    cocktail2ingredients = {}
+
+    for cocktail_id in cocktail_ids:
+        cocktail2ingredients[cocktail_id] = cocktail_components_from_id(
+            cocktail_id
+        )
+
+    return cocktail2ingredients
