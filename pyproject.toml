@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cocktail-cli"
-version = "0.1.0"
+version = "0.1.2"
 authors = ["0.1.0 <mat.p.wasilewski@gmail.com>"]
 description = "CLI for cocktail makers!"
 

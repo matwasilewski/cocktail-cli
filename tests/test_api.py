@@ -2,7 +2,7 @@ import pytest
 import requests
 import json
 
-from src.cocktail_cli.api import (
+from cocktail_cli.api import (
     cocktails_with_ingredient,
     cocktail_components,
     cocktail_components_from_id,

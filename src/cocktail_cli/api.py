@@ -6,7 +6,7 @@ from typing import List, Dict
 import requests
 from requests_cache import CachedSession
 
-from src.cocktail_cli.exceptions import (
+from cocktail_cli.exceptions import (
     CocktailDetailsException,
     CocktailAPIException,
 )
