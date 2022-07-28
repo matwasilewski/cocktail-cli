@@ -36,27 +36,18 @@ def blackberry_brandy_mock(requests_mock):
     )
     return requests_mock
 
+
 @pytest.fixture
 def allegheny_mock(requests_mock):
     with open("resources/allegheny.json") as f:
         outcome = json.load(f)
 
     requests_mock.get(
-        "https://www.thecocktaildb.com/api/json/v1/1/lookup.php\?i\=11021",
+        "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=11021",
         json=outcome,
     )
     return requests_mock
 
-@pytest.fixture
-def jelly_bean_mock(requests_mock):
-    with open("resources/turf_cocktail.json") as f:
-        outcome = json.load(f)
-
-    requests_mock.get(
-        "https://www.thecocktaildb.com/api/json/v1/1/lookup.php\?i\=12418",
-        json=outcome,
-    )
-    return requests_mock
 
 @pytest.fixture
 def jelly_bean_mock(requests_mock):
@@ -64,7 +55,31 @@ def jelly_bean_mock(requests_mock):
         outcome = json.load(f)
 
     requests_mock.get(
-        "https://www.thecocktaildb.com/api/json/v1/1/lookup.php\?i\=13775",
+        "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=13775",
+        json=outcome,
+    )
+    return requests_mock
+
+
+@pytest.fixture
+def turf_cocktail_mock(requests_mock):
+    with open("resources/turf_cocktail.json") as f:
+        outcome = json.load(f)
+
+    requests_mock.get(
+        "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=12418",
+        json=outcome,
+    )
+    return requests_mock
+
+
+@pytest.fixture
+def rum_runner_mock(requests_mock):
+    with open("resources/rum_runner.json") as f:
+        outcome = json.load(f)
+
+    requests_mock.get(
+        "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=16250",
         json=outcome,
     )
     return requests_mock
@@ -117,14 +132,35 @@ def test_get_cocktails_that_have_given_ingredients(
     assert cocktails[3] == "16250"
 
 
-def test_get_cocktails_that_have_given_ingredients():
+def test_get_cocktail2ingredients(
+    allegheny_mock, jelly_bean_mock, rum_runner_mock, turf_cocktail_mock
+):
     cocktail_ids = ["11021", "12418", "13775", "16250"]
 
     cocktail2ingredients = get_cocktail2ingredients(cocktail_ids)
 
     assert len(cocktail2ingredients) == 4
 
-    assert cocktail2ingredients["11021"] == ["Blackberry brandy", "Bourbon", ]
-    assert cocktail2ingredients["12418"] =
-    assert cocktail2ingredients["13775"] =
-    assert cocktail2ingredients["16250"] =
+    assert cocktail2ingredients["11021"] == [
+        "Blackberry brandy",
+        "Bourbon",
+        "Dry Vermouth",
+        "Lemon juice",
+        "Lemon peel",
+    ]
+
+    assert cocktail2ingredients["12418"] == [
+        "Anis",
+        "Bitters",
+        "Dry Vermouth",
+        "Gin",
+        "Orange peel",
+    ]
+    assert cocktail2ingredients["13775"] == ["Anis", "Blackberry brandy"]
+    assert cocktail2ingredients["16250"] == [
+        "Blackberry brandy",
+        "Cranberry juice",
+        "Malibu rum",
+        "Orange juice",
+        "Pineapple juice",
+    ]
