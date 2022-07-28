@@ -1,4 +1,4 @@
-from .config import settings
+from src.cocktail_cli.config import settings
 
 import datetime
 import logging
@@ -9,7 +9,7 @@ from typing import Optional
 import ujson
 from json_log_formatter import JSONFormatter
 
-from .exceptions import BadLogFormatException
+from src.cocktail_cli.exceptions import BadLogFormatException
 
 GREY = "\x1b[38;21m"
 RED = "\x1b[31;21m"
