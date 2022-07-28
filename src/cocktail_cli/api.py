@@ -77,8 +77,12 @@ def cocktail_components(cocktail_url) -> List[str]:
     return sorted(list(ingredients))
 
 
-def get_cocktails_that_can_be_made_from_components(components: List[str]):
-    cocktails = set()
+def get_cocktails_that_have_given_ingredients(components: List[str]):
+    cocktail_ids = set()
 
     for component in components:
-        cocktails = cocktails_with_ingredients([component])
+        cocktails_from_component = cocktails_with_ingredients([component])
+        for cocktail in cocktails_from_component:
+            cocktail_ids.add(cocktail["idDrink"])
+
+    return sorted(list(cocktail_ids))
