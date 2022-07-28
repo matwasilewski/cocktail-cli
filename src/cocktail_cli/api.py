@@ -32,9 +32,9 @@ session = CachedSession(
 filter_url = "https://www.thecocktaildb.com/api/json/v1/1/filter.php"
 
 
-def cocktails_with_ingredients(ingredients: List[str]) -> List[str]:
+def cocktails_with_ingredient(ingredient: str) -> List[str]:
     headers = {"Accept": "application/json"}
-    payload = {"i": ingredients}
+    payload = {"i": ingredient}
 
     try:
         resp = session.get(filter_url, params=payload, headers=headers)
@@ -45,7 +45,7 @@ def cocktails_with_ingredients(ingredients: List[str]) -> List[str]:
         raise CocktailAPIException("Non-200 exception in {resp}")
     except (JSONDecodeError, KeyError):
         cocktails = []
-        logging.warning(f"At least one component of {ingredients} is unknown!")
+        logging.warning(f"At least one component of {ingredient} is unknown!")
     return cocktails
 
 
@@ -81,7 +81,7 @@ def get_cocktails_that_have_given_ingredients(components: List[str]):
     cocktail_ids = set()
 
     for component in components:
-        cocktails_from_component = cocktails_with_ingredients([component])
+        cocktails_from_component = cocktails_with_ingredient([component])
         for cocktail in cocktails_from_component:
             cocktail_ids.add(cocktail["idDrink"])
 
