@@ -127,22 +127,27 @@ def test_get_cocktails_that_have_given_ingredients(
     ingredients = ["Blackberry brandy", "Anis"]
     cocktails = get_cocktails_that_have_given_ingredients(ingredients)
     assert len(cocktails) == 4
-    assert cocktails[0] == "11021"
-    assert cocktails[1] == "12418"
-    assert cocktails[2] == "13775"
-    assert cocktails[3] == "16250"
+    assert cocktails["11021"] == "Allegheny"
+    assert cocktails["12418"] == "Turf Cocktail"
+    assert cocktails["13775"] == "Jelly Bean"
+    assert cocktails["16250"] == "Rum Runner"
 
 
 def test_get_cocktail2ingredients(
     allegheny_mock, jelly_bean_mock, rum_runner_mock, turf_cocktail_mock
 ):
-    cocktail_ids = ["11021", "12418", "13775", "16250"]
+    cocktail_ids = {
+        "11021": "Allegheny",
+        "12418": "Turf Cocktail",
+        "13775": "Jelly Bean",
+        "16250": "Rum Runner",
+    }
 
     cocktail2ingredients = get_cocktail2ingredients(cocktail_ids)
 
     assert len(cocktail2ingredients) == 4
 
-    assert cocktail2ingredients["11021"] == [
+    assert cocktail2ingredients["11021"]["ingredients"] == [
         "Blackberry brandy",
         "Bourbon",
         "Dry Vermouth",
@@ -150,15 +155,18 @@ def test_get_cocktail2ingredients(
         "Lemon peel",
     ]
 
-    assert cocktail2ingredients["12418"] == [
+    assert cocktail2ingredients["12418"]["ingredients"] == [
         "Anis",
         "Bitters",
         "Dry Vermouth",
         "Gin",
         "Orange peel",
     ]
-    assert cocktail2ingredients["13775"] == ["Anis", "Blackberry brandy"]
-    assert cocktail2ingredients["16250"] == [
+    assert cocktail2ingredients["13775"]["ingredients"] == [
+        "Anis",
+        "Blackberry brandy",
+    ]
+    assert cocktail2ingredients["16250"]["ingredients"] == [
         "Blackberry brandy",
         "Cranberry juice",
         "Malibu rum",
@@ -169,22 +177,40 @@ def test_get_cocktail2ingredients(
 
 def test_what_cocktail_can_i_make():
     cocktail2ingredients = {
-        "11021": [
-            "Blackberry brandy",
-            "Bourbon",
-            "Dry Vermouth",
-            "Lemon juice",
-            "Lemon peel",
-        ],
-        "12418": ["Anis", "Bitters", "Dry Vermouth", "Gin", "Orange peel"],
-        "13775": ["Anis", "Blackberry brandy"],
-        "16250": [
-            "Blackberry brandy",
-            "Cranberry juice",
-            "Malibu rum",
-            "Orange juice",
-            "Pineapple juice",
-        ],
+        "11021": {
+            "name": "Allegheny",
+            "ingredients": [
+                "Blackberry brandy",
+                "Bourbon",
+                "Dry Vermouth",
+                "Lemon juice",
+                "Lemon peel",
+            ],
+        },
+        "12418": {
+            "name": "Turf Cocktail",
+            "ingredients": [
+                "Anis",
+                "Bitters",
+                "Dry Vermouth",
+                "Gin",
+                "Orange peel",
+            ],
+        },
+        "13775": {
+            "name": "Jelly Bean",
+            "ingredients": ["Anis", "Blackberry brandy"],
+        },
+        "16250": {
+            "name": "Rum Runner",
+            "ingredients": [
+                "Blackberry brandy",
+                "Cranberry juice",
+                "Malibu rum",
+                "Orange juice",
+                "Pineapple juice",
+            ],
+        },
     }
     ingredients = ["Anis", "Blackberry brandy"]
 
