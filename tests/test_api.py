@@ -13,12 +13,24 @@ cocktail_url = "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=11007"
 
 
 @pytest.fixture
-def ingredients_1_mock(requests_mock):
+def anis_mock(requests_mock):
     with open("resources/anis.json") as f:
         outcome = json.load(f)
 
     requests_mock.get(
         "https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=Anis",
+        json=outcome,
+    )
+    return requests_mock
+
+
+@pytest.fixture
+def blackberry_brandy_mock(requests_mock):
+    with open("resources/blackberry_brandy.json") as f:
+        outcome = json.load(f)
+
+    requests_mock.get(
+        "https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=Blackberry brandy",
         json=outcome,
     )
     return requests_mock
@@ -35,7 +47,7 @@ def cocktail_2_mock(requests_mock):
     return requests_mock
 
 
-def test_cocktails_from_ingredients_1(ingredients_1_mock):
+def test_cocktails_from_ingredients_1(anis_mock):
     ingredient = "Anis"
     cocktails_list = cocktails_with_ingredient(ingredient=ingredient)
     assert len(cocktails_list) == 2
@@ -59,6 +71,8 @@ def test_cocktail_details_from_id(cocktail_2_mock):
     assert components_list[3] == "Triple sec"
 
 
-def test_get_cocktails_that_have_given_ingredients(ingredients_1_mock):
+def test_get_cocktails_that_have_given_ingredients(
+    anis_mock, blackberry_brandy_mock
+):
     ingredients = ["Blackberry brandy", "Anis"]
     cocktails = get_cocktails_that_have_given_ingredients(ingredients)
