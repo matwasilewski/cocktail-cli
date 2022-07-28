@@ -8,6 +8,7 @@ from src.cocktail_cli.api import (
     cocktail_components_from_id,
     get_cocktails_that_have_given_ingredients,
     get_cocktail2ingredients,
+    what_cocktail_can_i_make,
 )
 
 cocktail_url = "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=11007"
@@ -164,3 +165,27 @@ def test_get_cocktail2ingredients(
         "Orange juice",
         "Pineapple juice",
     ]
+
+
+def test_what_cocktail_can_i_make():
+    cocktail2ingredients = {
+        "11021": [
+            "Blackberry brandy",
+            "Bourbon",
+            "Dry Vermouth",
+            "Lemon juice",
+            "Lemon peel",
+        ],
+        "12418": ["Anis", "Bitters", "Dry Vermouth", "Gin", "Orange peel"],
+        "13775": ["Anis", "Blackberry brandy"],
+        "16250": [
+            "Blackberry brandy",
+            "Cranberry juice",
+            "Malibu rum",
+            "Orange juice",
+            "Pineapple juice",
+        ],
+    }
+    ingredients = ["Anis", "Blackberry brandy"]
+
+    cocktails = what_cocktail_can_i_make(cocktail2ingredients, ingredients)
