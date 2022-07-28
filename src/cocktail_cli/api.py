@@ -11,23 +11,24 @@ from src.cocktail_cli.exceptions import (
     CocktailAPIException,
 )
 
-session = CachedSession(
-    "cocktails_cache",
-    use_cache_dir=True,
-    cache_control=True,
-    expire_after=timedelta(days=1),
-    allowable_methods=[
-        "GET",
-        "POST",
-    ],
-    allowable_codes=[
-        200,
-        400,
-    ],
-    ignored_parameters=["api_key"],
-    match_headers=True,
-    stale_if_error=True,
-)
+session = requests.Session()
+# session = CachedSession(
+#     "cocktails_cache",
+#     use_cache_dir=True,
+#     cache_control=True,
+#     expire_after=timedelta(days=1),
+#     allowable_methods=[
+#         "GET",
+#         "POST",
+#     ],
+#     allowable_codes=[
+#         200,
+#         400,
+#     ],
+#     ignored_parameters=["api_key"],
+#     match_headers=True,
+#     stale_if_error=True,
+# )
 
 filter_url = "https://www.thecocktaildb.com/api/json/v1/1/filter.php"
 
@@ -81,7 +82,7 @@ def get_cocktails_that_have_given_ingredients(components: List[str]):
     cocktail_ids = set()
 
     for component in components:
-        cocktails_from_component = cocktails_with_ingredient([component])
+        cocktails_from_component = cocktails_with_ingredient(component)
         for cocktail in cocktails_from_component:
             cocktail_ids.add(cocktail["idDrink"])
 
