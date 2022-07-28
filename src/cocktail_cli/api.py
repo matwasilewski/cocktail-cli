@@ -32,7 +32,7 @@ session = CachedSession(
 filter_url = "https://www.thecocktaildb.com/api/json/v1/1/filter.php"
 
 
-def cocktails_with_ingredients(ingredients: List[str]):
+def cocktails_with_ingredients(ingredients: List[str]) -> List[str]:
     headers = {"Accept": "application/json"}
     payload = {"i": ingredients}
 
@@ -47,6 +47,11 @@ def cocktails_with_ingredients(ingredients: List[str]):
         cocktails = []
         logging.warning(f"At least one component of {ingredients} is unknown!")
     return cocktails
+
+
+def cocktail_components_from_id(cocktail_id: str) -> List[str]:
+    url = f"https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i={cocktail_id}"
+    return cocktail_components(url)
 
 
 def cocktail_components(cocktail_url) -> List[str]:
@@ -70,3 +75,10 @@ def cocktail_components(cocktail_url) -> List[str]:
         raise CocktailDetailsException()
 
     return sorted(list(ingredients))
+
+
+def get_cocktails_that_can_be_made_from_components(components: List[str]):
+    cocktails = set()
+
+    for component in components:
+        cocktails = cocktails_with_ingredients([component])
